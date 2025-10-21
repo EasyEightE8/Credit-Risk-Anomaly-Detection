@@ -26,14 +26,26 @@ def generate_loan_data(n_rows=N_ROWS, default_rate=DEFAULT_RATE_BASE, n_anomalie
         
         # Adjust default probability based on credit score and loan-to-income ratio
         proba_de_defaut_ajustee = default_rate
-        if credit_score < 600:
+        
+        # Ajustements basés sur le score de crédit et le ratio prêt/revenu
+        
+        # Score de crédit très faible
+        if credit_score < 500:
+            proba_de_defaut_ajustee += 0.30
+        # Score de crédit faible
+        if credit_score < 620:
             proba_de_defaut_ajustee += 0.20
-        if borrower_income < 30000:
+        # Score de crédit moyen
+        if  credit_score > 750:
+            proba_de_defaut_ajustee -= 0.05
+        # Revenu faible
+        if  borrower_income < 35000:
             proba_de_defaut_ajustee += 0.15
-        if loan_amount / borrower_income > 0.5:
+        # Ratio prêt/revenu élevé
+        if (loan_amount / borrower_income) > 0.6:
             proba_de_defaut_ajustee += 0.10
-        # Limiter la probabilité de défaut à un maximum de 90%
-        proba_de_defaut_ajustee = min(proba_de_defaut_ajustee, 0.90)
+        # Limiter la probabilité de défaut entre 1% et 90%
+        proba_de_defaut_ajustee = max(0.01, min(proba_de_defaut_ajustee, 0.90))
         # Déterminer si le prêt est en défaut
         defaulted = np.random.rand() < proba_de_defaut_ajustee
 
@@ -47,7 +59,7 @@ def generate_loan_data(n_rows=N_ROWS, default_rate=DEFAULT_RATE_BASE, n_anomalie
             'borrower_age': borrower_age,
             'borrower_income': borrower_income,
             'credit_score': credit_score,
-            'defaulted': int(defaulted)
+            'defaulted': int(defaulted),
             'is_simulated_anomaly': 0
         })
 
