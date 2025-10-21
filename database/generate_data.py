@@ -4,7 +4,6 @@ from faker import Faker
 import os 
 from datetime import datetime, timedelta
 
-# Initialisation de Faker pour générer des données fictives
 N_ROWS = 75000 # Number of rows to generate
 DEFAULT_RATE_BASE = 0.10 # 10% default interest rate
 N_ANOMALIES = int(N_ROWS * 0.05) # 5% anomalies
@@ -27,13 +26,10 @@ def generate_loan_data(n_rows=N_ROWS, default_rate=DEFAULT_RATE_BASE, n_anomalie
         
         # Adjust default probability based on credit score and loan-to-income ratio
         proba_de_defaut_ajustee = default_rate
-        # Ajustements basés sur le score de crédit et le ratio prêt/revenu
         if credit_score < 600:
             proba_de_defaut_ajustee += 0.20
-        # Ajustements basés sur le score de crédit et le ratio prêt/revenu
         if borrower_income < 30000:
             proba_de_defaut_ajustee += 0.15
-        # Ajustements basés sur le score de crédit et le ratio prêt/revenu
         if loan_amount / borrower_income > 0.5:
             proba_de_defaut_ajustee += 0.10
         # Limiter la probabilité de défaut à un maximum de 90%
@@ -51,7 +47,7 @@ def generate_loan_data(n_rows=N_ROWS, default_rate=DEFAULT_RATE_BASE, n_anomalie
             'borrower_age': borrower_age,
             'borrower_income': borrower_income,
             'credit_score': credit_score,
-            'defaulted': defaulted
+            'defaulted': int(defaulted)
         })
 
     df = pd.DataFrame(data)
@@ -68,7 +64,6 @@ def generate_loan_data(n_rows=N_ROWS, default_rate=DEFAULT_RATE_BASE, n_anomalie
             df.at[idx, 'end_date'] = df.at[idx, 'start_date'] - timedelta(days=30)  # End date before start date
         elif anomaly_type == 'extreme_income':
             df.at[idx, 'borrower_income'] = np.random.randint(1000000, 5000000)  # Unrealistically high income
-
     return df
 
 if __name__ == "__main__":
