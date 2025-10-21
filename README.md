@@ -17,8 +17,8 @@ Ce projet consiste à développer un service web complet (API REST) capable d'é
 * **Objectif :** Mettre en place l'infrastructure de données (data persistence layer) simulant un environnement bancaire. Cette base sert de "source de vérité" (Single Source of Truth) pour l'entraînement et la validation des modèles.
 * **Compétences et Technologies :**
     * **[ ] SGBD Relationnel (MySQL/MariaDB)** : Conception d'un schéma relationnel optimisé incluant les tables `clients` (données démographiques), `comptes` (soldes, historique), `demandes_de_pret` (montant, durée, etc.) et la variable cible `statut_pret` (Remboursé / Défaut).
-    * **[ ] SQL & Optimisation** : Développement de requêtes SQL performantes pour l'extraction des données. Documentation des stratégies d'indexation visant à garantir une faible latence (en s'inspirant de [l'expérience de réduction de latence de 350ms à 50ms](https://www.linkedin.com/in/easy-eight-e8/details/experience/)).
-    * **[ ] Data Engineering** : Application des principes d'ingénierie des données pour assurer la cohérence et l'intégrité du schéma (similaire à l'architecture de la [base de données patients](https://www.linkedin.com/in/easy-eight-e8/details/experience/)).
+    * **[ ] SQL & Optimisation** : Développement de requêtes SQL performantes pour l'extraction des données. Documentation des stratégies d'indexation visant à garantir une faible latence.
+    * **[ ] Data Engineering** : Application des principes d'ingénierie des données pour assurer la cohérence et l'intégrité du schéma.
 
 ### Phase 2 : Modélisation, IA et Data Science
 
@@ -29,7 +29,7 @@ Ce projet consiste à développer un service web complet (API REST) capable d'é
     * **[ ] Data Visualization (Matplotlib/Seaborn)** : Création de visualisations pour analyser les profils des emprunteurs et la distribution des variables.
     * **[ ] Machine Learning (Scikit-learn)** :
         * **[ ] Modèle 1 (Scoring de Crédit)** : Entraînement d'un modèle de classification (ex: Random Forest, Gradient Boosting) pour prédire `statut_pret`.
-        * **[ ] Modèle 2 (Détection d'Anomalies)** : Entraînement d'un modèle non supervisé (ex: Isolation Forest) pour identifier les demandes atypiques, en s'appuyant sur [l'expérience en détection d'anomalies à 92%](https://www.linkedin.com/in/easy-eight-e8/details/experience/).
+        * **[ ] Modèle 2 (Détection d'Anomalies)** : Entraînement d'un modèle non supervisé (ex: Isolation Forest) pour identifier les demandes atypiques.
 
 ### Phase 3 : Industrialisation (API REST & DevOps)
 
