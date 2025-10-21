@@ -48,6 +48,7 @@ def generate_loan_data(n_rows=N_ROWS, default_rate=DEFAULT_RATE_BASE, n_anomalie
             'borrower_income': borrower_income,
             'credit_score': credit_score,
             'defaulted': int(defaulted)
+            'is_simulated_anomaly': 0
         })
 
     df = pd.DataFrame(data)
@@ -55,6 +56,8 @@ def generate_loan_data(n_rows=N_ROWS, default_rate=DEFAULT_RATE_BASE, n_anomalie
     for _ in range(n_anomalies):
         idx = np.random.randint(0, n_rows)
         anomaly_type = np.random.choice(['negative_loan', 'high_interest', 'invalid_dates', 'extreme_income'])
+        # Marquer cette ligne comme une anomalie simulée
+        df.at[idx, 'is_simulated_anomaly'] = 1
 
         if anomaly_type == 'negative_loan':
             df.at[idx, 'loan_amount'] = -abs(df.at[idx, 'loan_amount'])
