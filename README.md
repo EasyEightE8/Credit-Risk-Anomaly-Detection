@@ -52,6 +52,18 @@ Ce projet consiste à développer un service web complet (API REST) capable d'é
 
 * **Objectif :** Démontrer une compréhension approfondie des limites d'un modèle purement "statique" et proposer une feuille de route d'amélioration en intégrant des facteurs de risque de marché.
 * **Compétences et Technologies :**
-    * **[ ] Analyse Financière** : Rédaction d'une analyse critique dans ce `README` (ou un Jupyter Notebook dédié) sur les limites du modèle (basé uniquement sur des données "micro" et idiosyncratiques).
+    * **[ ] Analyse Financière** : Rédaction d'une analyse critique dans ce `README` sur les limites du modèle (basé uniquement sur des données "micro" et idiosyncratiques).
     * **[ ] Connaissances Marché (Bloomberg)** : Proposition conceptuelle d'amélioration du modèle par l'intégration de "features" macro-économiques (ex: taux directeurs, taux de chômage, volatilité) pour capturer le risque systémique.
     * **[ ] Extraction de Données (Bloomberg BQL/BFF)** : Explication de la méthode d'extraction de ces données via les [API Bloomberg (BMC, BFF, BQL)](https://www.linkedin.com/in/easy-eight-e8/details/skills/) pour enrichir le "feature set" du modèle de scoring.
+
+#### Analyse critique 
+
+Le modèle de scoring de crédit actuel (`credit_model.pkl`) est basé uniquement sur des données microéconomiques et statiques relatives à l'emprunteur au moment de la demande il présente une limite majeure : il ne prend pas en compte l'environnement macroéconomique*et le risque de marché.
+
+Pour le rendre plus précis il faudrait ajouter des variables tels que :
+
+- Taux de chômage
+- Croissance du PIB
+- Indice de confiance des consommateurs
+- Volatilité des marchés actions
+- Spreads de crédit
