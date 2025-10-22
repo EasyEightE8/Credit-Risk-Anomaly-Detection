@@ -6,9 +6,10 @@ import pandas as pd
 
 app = Flask(__name__)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Define model file paths
-SCORING_MODEL_PATH = 'models/anomaly_model_scoring_credit.pkl'
-ANOMALY_MODEL_PATH = 'models/anomaly_model_detection_anomalies.pkl'
+SCORING_MODEL_PATH = os.path.join(BASE_DIR, 'models', 'anomaly_model_scoring_credit.pkl')
+ANOMALY_MODEL_PATH = os.path.join(BASE_DIR, 'models', 'anomaly_model_detection_anomalies.pkl')
 
 try:
     # Load models
@@ -17,11 +18,13 @@ try:
 
 # Handle case where models are not found
 except FileNotFoundError as e:
+    print(f"Model file not found: {e}")
     rf_model = None
     iso_model = None
     
 # Handle other exceptions during model loading   
 except Exception as e:
+    print(f"Error loading models: {e}")
     rf_model = None
     iso_model = None
 
@@ -47,33 +50,40 @@ def score():
         if not data:
             return jsonify({"error": "No data provided"}), 400
         
+        # Convert input data to DataFrame
         df_input = pd.DataFrame([data])
-        
-        features_scoring = ['loan_amount', 'term_months', 'interest_rate', 'borrower_age', 'borrower_income', 'credit_score']
+        # Utiliser même ordre que dans l'entraînement ( HYPER IMPORTANT)
+        features_scoring = ['credit_score', 'loan_amount', 'interest_rate', 'borrower_income', 'term_months', 'borrower_age']
         df_input_scoring = df_input[features_scoring]
         
         features_anomalie = ['loan_amount', 'interest_rate', 'borrower_income', 'credit_score']
         df_input_anomalie = df_input[features_anomalie]
-        
+    
+    # Handle missing features in input data
     except KeyError as e:
         return jsonify({"error": f"Missing features in input data: {e}"}), 400
     except Exception as e:
-        return jsonify({"error": "Error processing input data"}), 500 
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": "Error processing input data"}), 500
+    
 
     # Convert input data to DataFrame
     try:
         proba_defaut = rf_model.predict_proba(df_input_scoring)[0][1]
-        
         prediction_anomalie = iso_model.predict(df_input_anomalie)[0]
-        
         is_anomaly = 1 if prediction_anomalie == -1 else 0
         
     except Exception as e:
+        print(f"!!! ERREUR DÉTAILLÉE lors de la prédiction: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({"error": "Error during model prediction"}), 500
- 
     
+ 
+    # Return the prediction results
     return jsonify({
-        "probability_default": rf_model.predict_proba(df_input_scoring)[:, 1].tolist(),
+        "probability_of_default": round(float(proba_defaut), 4),
         "is_anomaly": int(is_anomaly)})
 
 
